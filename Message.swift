@@ -7,8 +7,9 @@
 
 import Foundation
 import Vapor
+import FluentSQLite
 
-struct Message: Content {
+struct Message: Content, SQLiteUUIDModel, Migration {
     
     var id: UUID?
     var username: String

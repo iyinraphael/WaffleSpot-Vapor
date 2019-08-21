@@ -16,6 +16,9 @@ public func configure(
     services.register(router, as: Router.self)
 
     // Configure the rest of your application here
+    
+    
+    //MARK: - It renders leaf to create Html web page
     try services.register(LeafProvider())
     config.prefer(LeafRenderer.self, for: ViewRenderer.self)
     
@@ -23,6 +26,7 @@ public func configure(
         return try req.view().render("home")
     }
     
+    //MARK:- Database set up
     try services.register(FluentSQLiteProvider())
     let sqlite = try SQLiteDatabase(storage: .memory)
     
@@ -30,4 +34,8 @@ public func configure(
     databases.add(database: sqlite, as: .sqlite)
     services.register(databases)
 
+    //MARK:- Allows write and read Swift type to and From Database
+    var migrationConfig = MigrationConfig()
+    migrationConfig.add(migration: Message.self, database: .sqlite)
+    services.register(migrationConfig)
 }
