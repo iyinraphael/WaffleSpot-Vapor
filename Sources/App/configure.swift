@@ -1,5 +1,6 @@
 import Vapor
 import Leaf
+import FluentSQLite
 
 /// Called before your application initializes.
 ///
@@ -21,4 +22,12 @@ public func configure(
     router.get { req -> Future<View> in
         return try req.view().render("home")
     }
+    
+    try services.register(FluentSQLiteProvider())
+    let sqlite = try SQLiteDatabase(storage: .memory)
+    
+    var databases = DatabasesConfig()
+    databases.add(database: sqlite, as: .sqlite)
+    services.register(databases)
+
 }
