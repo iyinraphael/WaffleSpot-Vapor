@@ -23,7 +23,13 @@ public func configure(
     config.prefer(LeafRenderer.self, for: ViewRenderer.self)
     
     router.get { req -> Future<View> in
-        return try req.view().render("home")
+        
+        //thsi will fetch the messages in our database and return a dynamic homepage
+        return Message.query(on: req).all().flatMap(to: View.self) { messages in
+            let context = ["messages" : messages]
+            return try req.view().render("home", context)
+
+        }
     }
     
     //MARK:- Database set up
