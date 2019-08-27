@@ -18,7 +18,7 @@ public func configure(
     // Configure the rest of your application here
     
     
-    //MARK: - It renders leaf to create Html web page
+    //MARK: - Configure Leaf template and Homepage with home.leaf 
     try services.register(LeafProvider())
     config.prefer(LeafRenderer.self, for: ViewRenderer.self)
     
@@ -36,6 +36,6 @@ public func configure(
 
     //MARK:- Allows write and read Swift type to and From Database
     var migrationConfig = MigrationConfig()
-    migrationConfig.add(migration: Message.self, database: .sqlite)
+    migrationConfig.add(model: Message.self, database: .sqlite)
     services.register(migrationConfig)
 }

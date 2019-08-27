@@ -9,6 +9,8 @@ import Foundation
 import Vapor
 import FluentSQLite
 
+
+//MARK: - Fluent - Vapor's remarkably powerful database abstraction layer
 struct Message: Content, SQLiteUUIDModel, Migration {
     
     var id: UUID?
