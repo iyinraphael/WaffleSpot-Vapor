@@ -24,13 +24,18 @@ public func configure(
     
     router.get { req -> Future<View> in
         
-        //thsi will fetch the messages in our database and return a dynamic homepage
-        return Message.query(on: req).all().flatMap(to: View.self) { messages in
+        //this will fetch the messages in our database and return a dynamic homepage
+        return Message.query(on: req).sort(\Message.date, .descending).all().flatMap(to: View.self) { messages in
             let context = ["messages" : messages]
             return try req.view().render("home", context)
 
         }
     }
+    
+    router.get("list") { req -> Future<[Message]> in
+        return Message.query(on: req).sort(\Message.date, .descending).all()
+    }
+    
     
     //MARK:- Database set up
     try services.register(FluentSQLiteProvider())
